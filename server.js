@@ -4,6 +4,7 @@ const app = express();
 const port = 3000;
 const axios = require('axios');
 const { exec } = require('child_process');
+const tunnelmole = require('tunnelmole/cjs');
 const routes = require('./src/router');
 
 let url;
@@ -31,6 +32,9 @@ app.listen(port, () => {
 });
 
 
+tunnelmole.tunnelmole({
+  port: 3000
+});
 
 // Execute the command
 const child = exec('tmole 3000');
