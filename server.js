@@ -32,12 +32,10 @@ app.listen(port, () => {
 });
 
 
-tunnelmole.tunnelmole({
-  port: 3000
-});
+
 
 // Execute the command
-const child = exec('tmole 3000');
+const child = exec('ngrok http 3000');
 
 // Listen for the output of the command
 child.stdout.on('data', (data) => {
