@@ -1,7 +1,11 @@
 maplibregl.setRTLTextPlugin('https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.min.js');
+const headers =  { 
+    'ngrok-skip-browser-warning':true
+  }
 
 
-fetch('https://5ae6-2a02-ab04-3d2-f800-f8f5-922f-121f-2f47.ngrok-free.app/folder-contents')
+fetch('https://d029-2a02-ab04-3d2-f800-f8f5-922f-121f-2f47.ngrok-free.app/folder-contents',{
+    headers: headers})
     .then(response => response.json())
     .then(data => {
         Data.Route.routes = data.files
@@ -60,8 +64,10 @@ let Data = Alpine.reactive({
 });
 
 function fetchData() {
+   
     // Make a request to your server's API endpoint that serves the track.json data
-    fetch(`https://5ae6-2a02-ab04-3d2-f800-f8f5-922f-121f-2f47.ngrok-free.app/getRecord/${Data.Route.selected}`) // Replace "/api/track" with the actual API endpoint on your server
+    fetch(`https://d029-2a02-ab04-3d2-f800-f8f5-922f-121f-2f47.ngrok-free.app/getRecord/${Data.Route.selected}`,{
+        headers: headers}) // Replace "/api/track" with the actual API endpoint on your server
         .then((response) => response.json())
         .then((data) => {
             console.log(data);
