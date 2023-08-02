@@ -43,8 +43,19 @@ function createFileIfNotExists(filePath, initialData, callback) {
     });
   }
 
+  function del(filePath, callback) {
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        callback(err);
+      } else {
+        callback(null);
+      }
+    });
+  }
+
 module.exports = {
   read,
   store,
+  del,
   createFileIfNotExists,
 };

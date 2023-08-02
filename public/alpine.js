@@ -108,7 +108,7 @@ function renderChart(data) {
                     backgroundColor: 'rgba(237, 100, 166, 0.25)',
                     borderColor: 'rgba(237, 100, 166, 1)',
                     pointBackgroundColor: 'rgba(237, 100, 166, 1)',
-                    data: data.dates.today.data.altitude,
+                    data: data.logs.altitude,
                 },
             ],
         },
@@ -144,7 +144,7 @@ function loadMap() {
                     "properties": {},
                      "geometry": {
                         "type": "LineString",
-                        "coordinates": Data.path
+                        "coordinates": Data.logs.path
                     }
              }
             ]

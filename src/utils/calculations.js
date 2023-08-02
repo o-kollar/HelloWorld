@@ -42,8 +42,10 @@ function calculateDistanceFromPath(path) {
     }
   
     const sumOfSpeeds = validSpeeds.reduce((acc, speed) => acc + speed, 0);
-    const averageSpeed = sumOfSpeeds / validSpeeds.length;
-    return averageSpeed * 3.6;
+    const Speed = sumOfSpeeds / validSpeeds.length;
+    const averageSpeed = Speed * 3.6;
+
+    return averageSpeed.toFixed(1);
   }
   
   function getStartAndEndTimestamp(data) {
