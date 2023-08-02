@@ -61,18 +61,18 @@ let Data = Alpine.reactive({
 
 function fetchData() {
     // Make a request to your server's API endpoint that serves the track.json data
-    fetch(`./routes/${Data.Route.selected}`) // Replace "/api/track" with the actual API endpoint on your server
+    fetch(`/getRecord/${Data.Route.selected}`) // Replace "/api/track" with the actual API endpoint on your server
         .then((response) => response.json())
         .then((data) => {
             console.log(data);
-            let coords = data.dates.today.data.location;
+            let coords = data.logs.location;
             // new maplibregl.Marker({ color: '#FF5733' }).setLngLat(data.dates.today.data.location).addTo(map);
-            Data.distance = data.dates.today.total;
-            Data.duration = data.dates.today.duration;
-            Data.elevation = data.dates.today.upDown;
-            Data.speed = data.dates.today.speed;
-            Data.path = data.dates.today.data.path;
-            Data.location = data.dates.today.data.location;
+            Data.distance = data.total;
+            Data.duration = data.duration;
+            Data.elevation = data.upDown;
+            Data.speed = data.speed;
+            Data.path = data.logs.path;
+            Data.location = data.logs.location;
 
             renderChart(data);
             console.log(Data.location)
@@ -100,7 +100,7 @@ function renderChart(data) {
     let chart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: data.dates.today.data.labels,
+            labels: data.logs.updated,
             datasets: [
                 {
                     label: 'Altitude',
