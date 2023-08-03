@@ -152,7 +152,7 @@ function loadMap() {
                     "properties": {},
                      "geometry": {
                         "type": "LineString",
-                        "coordinates": Data.logs.path
+                        "coordinates": Data.path
                     }
              }
             ]
