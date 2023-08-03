@@ -25,7 +25,7 @@
 
 <body>
     <x-component name="map"></x-component>
-    <div class="w-full bg-gray-300  items-center justify-center px-5 py-5 ">
+    <div class="w-full bg-gray-300 rounded-xl shadow-2xl items-center justify-center px-5 py-5 ">
         <div>
             <div x-data="Data" class="mt-2 flex overflow-y-auto whitespace-nowrap max-h-20">
                 <div x-bind:class="`grid grid-cols-${Route.routes.length} rounded-xl bg-gray-200 p-2`">
@@ -46,7 +46,6 @@
     
         <div class="mt-5 rounded-xl backdrop-blur-xl bg-zinc-200">
 
-            <canvas id="chart" class="w-full"></canvas>
         </div>
     </div>
     </div>
