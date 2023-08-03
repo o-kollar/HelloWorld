@@ -44,9 +44,8 @@ let Data = Alpine.reactive({
                     gridLines: false,
                     scaleLabel: false,
                     ticks: {
-                        callback: function (value, index, array) {
-                            return `${value}m`;
-                        },
+                        display:false
+                    
                     },
                 },
             ],
@@ -64,7 +63,7 @@ let Data = Alpine.reactive({
 });
 
 function fetchData() {
-   
+
     // Make a request to your server's API endpoint that serves the track.json data
     fetch(`https://d029-2a02-ab04-3d2-f800-f8f5-922f-121f-2f47.ngrok-free.app/getRecord/${Data.Route.selected}`,{
         headers: headers}) // Replace "/api/track" with the actual API endpoint on your server
@@ -90,6 +89,8 @@ function fetchData() {
 }
 
 function renderChart(data) {
+
+    
     let c = false;
 
     Chart.helpers.each(Chart.instances, function (instance) {
@@ -127,10 +128,11 @@ function renderChart(data) {
     });
 }
 
-fetchData();
+
 setInterval(fetchData, 30000);
 
 window.onload = function(){loadMap()}
+fetchData();
 
 function loadMap() {
     let style = './resources/default.json';
@@ -195,5 +197,3 @@ function loadMap() {
     });
     
 };
-
-

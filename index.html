@@ -16,70 +16,34 @@
     <script src="https://unpkg.com/alpinejs"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.3/chart.min.js" integrity="sha512-fMPPLjF/Xr7Ga0679WgtqoSyfUoQgdt8IIxJymStR5zV3Fyb6B3u/8DcaZ6R6sXexk5Z64bCgo2TYyn760EdcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./loader.js"></script>
     <script src="./alpine.js"></script>
+   
 </head>
 
 <body>
-  
+    <x-component name="map"></x-component>
     <div class="w-full bg-gray-300  items-center justify-center px-5 py-5 ">
-        <div class="w-full h-60 flex flex-wrap bg-zinc-200 rounded-xl">
-            <div id="map" class=" place-self-center bg-blend-overlay h-56 w-full"></div>
-        </div>
         <div>
             <div x-data="Data" class="mt-2 flex overflow-y-auto whitespace-nowrap max-h-20">
                 <div x-bind:class="`grid grid-cols-${Route.routes.length} rounded-xl bg-gray-200 p-2`">
-                  <template x-for="route in Route.routes">
-                    <label class="inline-block cursor-pointer select-none rounded-xl p-2 text-center">
-                      <input type="radio" x-model="Route.selected" :value="route" x-on:change="fetchData()" class="peer hidden" />
-                      <span x-text="route" class="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold peer-checked:text-white"></span>
-                    </label>
-                  </template>
+                    <template x-for="route in Route.routes">
+                        <label class="inline-block cursor-pointer select-none rounded-xl p-2 text-center">
+                            <input type="radio" x-model="Route.selected" :value="route" x-on:change="fetchData()"
+                                class="peer hidden" />
+                            <span x-text="route"
+                                class="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold peer-checked:text-white"></span>
+                        </label>
+                    </template>
                 </div>
-              </div>
-              
-              
-              
-          </div>
-        <div class="grid-cols-2 ">
-
-            <div class="grid grid-cols-4 gap-2 mt-5 mb-5">
-                <div class="flex flex-wrap h-32 items-center justify-center rounded-xl bg-zinc-200">
-                <h1 class="material-symbols-outlined text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-purple-400 text-6xl">
-                    conversion_path
-                </h1>
-                <p x-text="`${Data.distance}KM`" class="font-mono font-bold  text-neutral-700"></p>
-
-                </div>
-            
-            <div class="flex flex-wrap col-span-3 items-center justify-center rounded-xl bg-zinc-200">
-                <span class="material-symbols-outlined  text-transparent bg-clip-text bg-[conic-gradient(at_left,_var(--tw-gradient-stops))] from-yellow-500 via-purple-500 to-blue-500 text-5xl">
-                    timer
-                    </span>
-            <div x-text="Data.duration" class="font-mono text-5xl font-bold "></div>
-            </div>
-                 </div>
-        </div>
-        <div class="grid grid-cols-4 gap-2 mt-5 mb-5">
-            <div class="flex flex-wrap col-span-3 items-center justify-center rounded-xl bg-zinc-200">
-                <span class="material-symbols-outlined  text-transparent bg-clip-text bg-[conic-gradient(at_left,_var(--tw-gradient-stops))] from-yellow-200 via-red-500 to-fuchsia-500 text-4xl">
-                    avg_pace
-                    </span>
-               <div x-text="`${Data.speed} KM/H`" class="font-mono text-2xl font-bold "></div>
-            </div>
-            <div class="flex flex-wrap h-32 items-center justify-center rounded-xl bg-zinc-200">
-                <span class="material-symbols-outlined  text-transparent bg-clip-text Pastel bg-gradient-to-tr from-violet-500 to-orange-300 text-6xl" x-text="Data.elevation > 0 ? 'trending_up' : 'trending_down'">
-                </span>
-                    <div x-text="Data.elevation" class="font-mono font-bold  text-neutral-700"></div>
-                    
-
-                
-
-                
             </div>
         </div>
 
-
-
+        <x-component name="time-distance"></x-component>
+        <x-component name="speed-elevation"></x-component>
+    
         <div class="mt-5 rounded-xl backdrop-blur-xl bg-zinc-200">
 
             <canvas id="chart" class="w-full"></canvas>
@@ -87,8 +51,9 @@
     </div>
     </div>
     </div>
-   
+    
 
+    <div>
 </body>
 
 </html>
