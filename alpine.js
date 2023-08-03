@@ -3,7 +3,6 @@ const headers =  {
     'ngrok-skip-browser-warning':true
   }
 
-
 fetch('https://d029-2a02-ab04-3d2-f800-f8f5-922f-121f-2f47.ngrok-free.app/folder-contents',{
     headers: headers})
     .then(response => response.json())
@@ -193,7 +192,8 @@ function loadMap() {
             } else {
                 window.clearInterval(timer);
             }
-        }, 10);
+        }, 50);
     });
     
 };
+
