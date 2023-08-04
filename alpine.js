@@ -23,6 +23,7 @@ let Data = Alpine.reactive({
     elevation: '',
     speed: '',
     path: [],
+    speeds:[],
     location:'',
 
     chartOptions: {
@@ -75,10 +76,12 @@ function fetchData() {
             Data.duration = data.duration;
             Data.elevation = data.upDown;
             Data.speed = data.speed;
+            Data.speeds = data.logs.speeds;
             Data.path = data.logs.path;
             Data.location = data.logs.location;
 
             renderChart(data);
+            renderBar(data);
             console.log(Data.location)
             loadMap()
         })
@@ -89,7 +92,6 @@ function fetchData() {
 
 function renderChart(data) {
 
-    
     let c = false;
 
     Chart.helpers.each(Chart.instances, function (instance) {
@@ -110,12 +112,11 @@ function renderChart(data) {
             datasets: [
                 {
                     label: 'Altitude',
-                    fill: false,
                     backgroundColor: 'rgba(237, 100, 166, 0.25)',
                     borderColor: 'rgba(237, 100, 166, 1)',
                     pointBackgroundColor: 'rgba(237, 100, 166, 1)',
                     data: data.logs.altitude,
-                },
+                }
             ],
         },
         layout: {
@@ -124,7 +125,7 @@ function renderChart(data) {
             },
         },
         options: Data.chartOptions,
-    });
+    });   
 }
 
 
@@ -197,3 +198,83 @@ function loadMap() {
     
 };
 
+function renderBar(data){
+var ctx12 = document.getElementById("chart12").getContext("2d");
+var data12 = {
+  labels: data.logs.updated,
+  datasets: [
+    {
+        type:'bar',
+      label: "Speed",
+      backgroundColor: "#eb4f34",
+      borderColor: "#eb4f34",
+      borderWidth: 2,
+      borderRadius:70,
+      data: data.logs.speeds.map(speed => speed * 3.6)
+    }
+  ] 
+};
+
+window.myBar = new Chart(ctx12, {
+  type: 'bar',
+  data: data12,
+  options: {
+    legend: {
+        display: false,
+    },
+    tooltips: {
+        enabled: false,
+    },
+    responsive: true,
+    title: {
+      display: false,
+      text: 'Chart.js Bar Chart'
+    },
+    legend: false,
+    scales: {
+        xAxes: [{
+            categoryPercentage: 0.5,
+            barPercentage: 1,
+            gridLines : {
+                display: false,
+                drawBorder: false,
+                drawTicks: false,
+
+            },
+            ticks: {
+                display:false,
+                fontStyle: 'bold',
+                fontSize: 13,
+                fontColor: "#333333",
+                beginAtZero: true
+            }
+        }],
+        yAxes: [{
+            gridLines: {
+                display: false,
+                drawBorder: false,
+                drawTicks: false,
+                tickMarkLength: 15,
+                borderDashOffset: 15
+            },
+            ticks: {
+                display: false,
+                fontStyle: 'bold',
+                fontSize: 10,
+                beginAtZero: true,
+            }
+        }]
+    }
+  }
+});}
+
+function findHighestSpeed(speeds) {
+    let highestSpeed = speeds[0]; // Assume the first speed is the highest initially
+  
+    for (let i = 1; i < speeds.length; i++) {
+      if (speeds[i] > highestSpeed) {
+        highestSpeed = speeds[i]; // Update the highest speed if a larger one is found
+      }
+    }
+    return highestSpeed.toFixed();
+  }

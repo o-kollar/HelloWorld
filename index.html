@@ -11,20 +11,19 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+
     <script src="https://unpkg.com/alpinejs-tash@1.x.x/dist/tash.min.js"></script>
     <script src="https://unpkg.com/alpinejs"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.3/chart.min.js" integrity="sha512-fMPPLjF/Xr7Ga0679WgtqoSyfUoQgdt8IIxJymStR5zV3Fyb6B3u/8DcaZ6R6sXexk5Z64bCgo2TYyn760EdcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
     <script src="./loader.js"></script>
     <script src="./alpine.js"></script>
    
 </head>
 
 <body>
-    <x-component name="map"></x-component>
+    <x-widget name="map"></x-widget>
     <div class="w-full bg-gray-300 rounded-xl shadow-2xl items-center justify-center px-5 py-5 ">
         <div>
             <div x-data="Data" class="mt-2 flex overflow-y-auto whitespace-nowrap max-h-20">
@@ -41,9 +40,14 @@
             </div>
         </div>
 
-        <x-component name="time-distance"></x-component>
-        <x-component name="speed-elevation"></x-component>
-    
+        <div class="grid grid-cols-5 gap-2 mt-2 mb-2">
+            <x-widget class="col-span-2" name="distance"></x-widget>
+            <x-widget class="col-span-3" name="speed"></x-widget>
+        </div>
+        <div class="grid grid-cols-5 gap-2 mt-2 mb-2">
+            <x-widget class="col-span-3" name="elevation"></x-widget>
+            <x-widget class="col-span-2" name="duration"></x-widget>
+        </div>
         <div class="mt-5 rounded-xl backdrop-blur-xl bg-zinc-200">
 
         </div>

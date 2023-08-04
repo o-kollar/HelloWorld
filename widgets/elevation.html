@@ -1,0 +1,12 @@
+<div class="flex flex-wrap relative overflow-hidden h-32 col-span-3  grid grid-rows-2 items-center justify-center rounded-xl bg-zinc-200">
+<div class="px-3 pt-8 pb-10 text-center relative z-10">
+    <span
+        class="material-symbols-outlined  text-transparent bg-clip-text Pastel bg-gradient-to-tr from-violet-500 to-orange-300 text-6xl"
+        x-text="Data.elevation > 0 ? 'trending_up' : 'trending_down'">
+    </span>
+    <div x-text="Data.elevation" class="font-mono font-bold  text-neutral-700"></div>
+</div>
+<div class="absolute bottom-0 inset-x-0">
+    <canvas id="chart" height="70"></canvas>
+</div>
+</div>

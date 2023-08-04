@@ -1,7 +1,7 @@
 class CustomElementLoader extends HTMLElement {
     connectedCallback() {
       const componentSCR =   this.getAttribute("name");
-      const filePath = `./components/${componentSCR}.html`
+      const filePath = `./widgets/${componentSCR}.html`
       if (!filePath) {
         console.error("No file path provided");
         return;
@@ -16,5 +16,5 @@ class CustomElementLoader extends HTMLElement {
     }
   }
   
-  customElements.define("x-component", CustomElementLoader);
+  customElements.define("x-widget", CustomElementLoader);
   

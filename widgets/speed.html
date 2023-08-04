@@ -1,0 +1,15 @@
+<div class="flex flex-wrap grid grid-rows-6 h-32 items-center rounded-xl bg-zinc-200">
+    
+    <div class="row grid items-center row-span-3">
+        <div class="w-56 place-self-end mt-1 pr-1 pl-5">
+            <canvas class="" id="chart12" height="50"></canvas>
+        </div>
+    </div>
+    <div class=" row row-span-2">
+        <br>
+        <span class="font-mono font-bold  text-neutral-700" x-text="` Average : ${Data.speed} KM/H`"></span>
+        <br>
+        <span class="font-mono font-bold  text-neutral-700" x-text="` Top : ${findHighestSpeed(Data.speeds) * 3.6} KM/H`"></span>
+    </div>
+
+</div>
