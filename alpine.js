@@ -206,11 +206,20 @@ var data12 = {
     {
         type:'bar',
       label: "Speed",
-      backgroundColor: "#eb4f34",
-      borderColor: "#eb4f34",
+      backgroundColor: "#00fad0",
+      borderColor: "#00fad0",
       borderWidth: 2,
-      borderRadius:70,
+      borderRadius:100,
       data: data.logs.speeds.map(speed => speed * 3.6)
+    },
+    {
+        type:'bar',
+      label: "Speed2",
+      backgroundColor: "#00fad0",
+      borderColor: "#00fad0",
+      borderWidth: 2,
+      borderRadius: 30,
+      data: data.logs.speeds.map(speed => speed * -3.6)
     }
   ] 
 };
