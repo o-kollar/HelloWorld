@@ -129,7 +129,6 @@ function renderChart(data) {
 }
 
 
-setInterval(fetchData, 30000);
 
 window.onload = function(){loadMap()}
 fetchData();

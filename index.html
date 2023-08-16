@@ -22,10 +22,9 @@
    
 </head>
 
-<body>
-    <x-widget name="map"></x-widget>
-    
-    <div class="w-full bg-zinc-100  dark:bg-zinc-700 dark:text-neutral-200 rounded-xl shadow-2xl items-center justify-center px-5 py-5 ">
+<body> 
+    <div class="w-full bg-zinc-100  dark:bg-zinc-700 dark:text-neutral-200 shadow-2xl items-center justify-center px-5 py-5 ">
+        <x-widget name="map"></x-widget>
         <div>
             <div x-data="Data" class="mt-2 flex overflow-y-auto whitespace-nowrap max-h-20 block p-5 rounded-lg  p-6 ">
                 <div x-bind:class="`grid grid-cols-${Route.routes.length} rounded-xl bg-gray-600 `"> 
@@ -38,6 +37,7 @@
                         </label>
                     </template>
                 </div>
+                
             </div>
         </div>
 
