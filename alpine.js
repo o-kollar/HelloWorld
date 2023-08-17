@@ -1,4 +1,14 @@
 maplibregl.setRTLTextPlugin('https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.min.js');
+
+let mapstyle;
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // Device is in dark mode
+       mapstyle =  './resources/dark.json'
+      } else {
+        // Device is not in dark mode
+        mapstyle =  './resources/default.json'
+      }
+
 const headers =  { 
     "ngrok-skip-browser-warning": 'true'
   }
@@ -134,11 +144,11 @@ window.onload = function(){loadMap()}
 fetchData();
 
 function loadMap() {
-    let style = './resources/default.json';
+    
 
     const map = new maplibregl.Map({
         container: 'map',
-        style: style,
+        style: mapstyle,
     });
 
     map.on('load', () => {
@@ -170,7 +180,7 @@ function loadMap() {
             'type': 'line',
             'source': 'trace',
             'paint': {
-                'line-color': 'green',
+                'line-color': '#00fad0',
                 'line-opacity': 0.75,
                 'line-width': 5
             }
