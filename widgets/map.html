@@ -1,6 +1,8 @@
 <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@3.2.0/dist/maplibre-gl.css' />
 <script src='https://unpkg.com/maplibre-gl@3.2.0/dist/maplibre-gl.js'></script>
 
-<div class="w-full h-54 flex  flex-wrap bg-zinc-200 rounded-xl">
-    <div id="map" class=" place-self-center bg-blend-overlay h-56 w-full"></div>
+<div class="w-full h-60 flex flex-wrap bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20 rounded-xl">
+    <div class="relative w-full h-full overflow-hidden rounded-xl">
+        <div id="map" class="absolute h-60 inset-0 rounded-xl" style="mask-image: radial-gradient(white, transparent);"></div>
+    </div>
 </div>
