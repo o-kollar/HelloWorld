@@ -1,6 +1,6 @@
 <div x-data="Data">
-    <div class="flex bg-zinc-700 bg-blur backdrop-blur-lg max-h-32 block ">
-        <div x-bind:class="`grid grid-cols-${Route.routes.length} overflow-y-auto bg-zinc-700 bg-blur backdrop-blur-lg whitespace-nowrap bg-gray-600 `">
+    <div class="flex flex-wrap bg-zinc-700  max-h-32 block ">
+        <div x-bind:class="`grid grid-cols-${Route.routes.length} overflow-y-auto bg-zinc-700 bg-blur backdrop-blur-lg whitespace-nowrap`">
             <template x-for="route in Route.routes">
                 <label class="inline-block flex flex-wrap cursor-pointer elect-none text-center ">
                     <input type="radio" x-model="Route.selected" :value="route.fileName" x-on:change="fetchData(Route.selected)"
