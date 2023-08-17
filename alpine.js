@@ -155,15 +155,14 @@ function loadMap() {
         const geojsonData = {
             "type": "FeatureCollection",
             "features": [
-
                 {
-                     "type": "Feature",
+                    "type": "Feature",
                     "properties": {},
-                     "geometry": {
+                    "geometry": {
                         "type": "LineString",
                         "coordinates": Data.path
                     }
-             }
+                }
             ]
         };
     
@@ -188,7 +187,6 @@ function loadMap() {
     
         // setup the viewport
         map.jumpTo({'center': coordinates[0], 'zoom': 14});
-    
         // on a regular basis, add more coordinates from the saved list and update the map
         let i = 0;
         const timer = window.setInterval(() => {
@@ -197,14 +195,19 @@ function loadMap() {
                     coordinates[i]
                 );
                 map.getSource('trace').setData(geojsonData);
-                map.panTo(coordinates[i]);
                 i++;
+                const bounds = coordinates.reduce((bounds, coord) => {
+                    return bounds.extend(coord);
+                }, new maplibregl.LngLatBounds(coordinates[0], coordinates[0]));
+        
+                map.fitBounds(bounds, {
+                    padding: 10
+                });                
             } else {
                 window.clearInterval(timer);
             }
-        }, 50);
-    });
-    
+        }, 35);
+    });  
 };
 
 function renderBar(data){
