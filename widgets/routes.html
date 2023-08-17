@@ -1,0 +1,25 @@
+<div x-data="Data">
+    <div class="flex  max-h-32 block ">
+        <div x-bind:class="`grid grid-cols-${Route.routes.length} overflow-y-auto  whitespace-nowrap bg-gray-600 `">
+            <template x-for="route in Route.routes">
+                <label class="inline-block flex flex-wrap cursor-pointer elect-none text-center ">
+                    <input type="radio" x-model="Route.selected" :value="route.fileName" x-on:change="fetchData(Route.selected)"
+                        class="peer hidden" />
+                    <div
+                        class="relative flex w-32 hover:bg-pink-200 hover:-translate-x-10 transition duration-300 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+                        <div class="p-4">
+
+                            <h5 x-text="route.fileName"
+                                class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+
+                            </h5>
+                            <p x-text="`${route.total}km`">
+                                Date
+                            </p>
+                        </div>
+                    </div>
+                </label>
+            </template>
+        </div>
+    </div>
+</div>

@@ -22,24 +22,13 @@
    
 </head>
 
-<body> 
+<body>
+  <div>
+    <x-widget name="routes"></x-widget>
     <div class="w-full bg-zinc-100  dark:bg-zinc-700 dark:text-neutral-200 shadow-2xl items-center justify-center px-5 py-5 ">
+
         <x-widget name="map"></x-widget>
-        <div>
-            <div x-data="Data" class="mt-2 flex overflow-y-auto whitespace-nowrap max-h-20 block p-5 rounded-lg  p-6 ">
-                <div x-bind:class="`grid grid-cols-${Route.routes.length} rounded-xl bg-gray-600 `"> 
-                    <template x-for="route in Route.routes">
-                        <label class="inline-block cursor-pointer select-none rounded-xl p-2 text-center ">
-                            <input type="radio" x-model="Route.selected" :value="route" x-on:change="fetchData()"
-                                class="peer hidden" />
-                            <span x-text="route"
-                                class="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold peer-checked:text-white"></span>
-                        </label>
-                    </template>
-                </div>
-                
-            </div>
-        </div>
+        
 
         <div class="grid grid-cols-5 gap-2 mt-2 mb-2">
             <x-widget class="col-span-2" name="duration"></x-widget>
@@ -55,9 +44,12 @@
     </div>
     </div>
     </div>
+    </div>
     
 
     <div>
+
+
 
 </body>
 

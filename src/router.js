@@ -58,7 +58,7 @@ router.post('/log', (req, res) => {
     console.log('Request:', req.body);
     const filePath = `./src/store/${fileName}`;
     const initialData = {
-        duration: '0h 0m',
+        duration: {},
         speed: 0,
         total: 0,
         elevation: 0,
@@ -85,7 +85,7 @@ router.post('/log', (req, res) => {
             }
 
             const Data = data || {
-                duration: '0h 0m',
+                duration: {},
                 speed: 0,
                 total: 0,
                 elevation: 0,
@@ -107,7 +107,7 @@ router.post('/log', (req, res) => {
             console.log('Start Timestamp: ' + startTimestamp);
             console.log('End Timestamp: ' + endTimestamp);
             const duration = calculationUtils.calculateDuration(startTimestamp, endTimestamp);
-            Data.duration = `${duration.hours}h ${duration.minutes}m`;
+            Data.duration = {hours: duration.hours, minutes:duration.minutes};
 
             // Calculate and store the new speed and bearing values
             const newSpeed = parseFloat(req.body.speed);
@@ -121,8 +121,8 @@ router.post('/log', (req, res) => {
             console.log('Average Bearing:', averageBearing);
 
             Data.total = calculationUtils.calculateDistanceFromPath(path);
-            Data.upDown = calculationUtils.calculateAverageDifference(altitudeArray);
-
+            Data.elevation = calculationUtils.calculateElevationMetrics(altitudeArray);
+            Data.stops = calculationUtils.analyzeActivity(data);
             // Add new altitude values to the arrays
             const formattedFloat = parseFloat(req.body.altitude);
             altitudeArray.push(formattedFloat);

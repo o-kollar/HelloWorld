@@ -108,7 +108,58 @@ function calculateDistanceFromPath(path) {
   
     return averageBearingDegrees;
   }
+
+  function calculateElevationMetrics(altitudeData) {
+    let totalElevationGain = 0;
+    let totalElevationLoss = 0;
   
+    for (let i = 1; i < altitudeData.length; i++) {
+      const elevationChange = altitudeData[i] - altitudeData[i - 1];
+      if (elevationChange > 0) {
+        totalElevationGain += elevationChange;
+      } else {
+        totalElevationLoss += Math.abs(elevationChange);
+      }
+    }
+  
+    const netElevationChange = totalElevationGain - totalElevationLoss;
+  
+    return {
+      totalElevationGain,
+      totalElevationLoss,
+      netElevationChange,
+    };
+  }
+
+  function analyzeActivity(data) {
+    const speedThreshold = 0.5 % 3.6; // Adjust this threshold to define what is considered a significant drop in speed
+    const restBreaks = [];
+    let activeTime = 0;
+    let idleTime = 0;
+  
+    const timestamps = data.logs.updated.map(timestamp => new Date(timestamp));
+    const speeds = data.logs.speeds;
+  
+    for (let i = 1; i < speeds.length; i++) {
+      const speed = speeds[i];
+      const prevSpeed = speeds[i - 1];
+      const timeDiff = (timestamps[i] - timestamps[i - 1]); // Convert milliseconds to seconds
+  
+      if (speed === null) {
+        continue; // Skip invalid speed data
+      }
+  
+      if (speed <= speedThreshold && prevSpeed > speedThreshold) {
+        // Start of a rest break or stop
+        restBreaks.push({ start: timestamps[i - 1], end: timestamps[i] });
+        idleTime += timeDiff;
+      } 
+    }
+
+    return restBreaks;
+  }
+
+
   
   module.exports = {
     calculateDistanceFromPath,
@@ -116,6 +167,8 @@ function calculateDistanceFromPath(path) {
     calculateAverageSpeed,
     getStartAndEndTimestamp,
     calculateDuration,
-    calculateAverageBearing
+    calculateAverageBearing,
+    calculateElevationMetrics,
+    analyzeActivity
   };
   
