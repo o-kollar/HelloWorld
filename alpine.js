@@ -1,6 +1,6 @@
 maplibregl.setRTLTextPlugin('https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.min.js');
 const headers =  { 
-    "ngrok-skip-browser-warning":true
+    "ngrok-skip-browser-warning": 'true'
   }
 let url = "https://27d1-2a02-ab04-3d2-f800-58b6-d2a-5157-785c.ngrok-free.app"
 fetch(`${url}/folder-contents`,{
@@ -74,7 +74,7 @@ function fetchData(route) {
             // new maplibregl.Marker({ color: '#FF5733' }).setLngLat(data.dates.today.data.location).addTo(map);
             Data.distance = data.total;
             Data.duration = data.duration;
-            Data.elevation = data.upDown;
+            Data.elevation = data.elevation;
             Data.speed = data.speed;
             Data.speeds = data.logs.speeds;
             Data.path = data.logs.path;
