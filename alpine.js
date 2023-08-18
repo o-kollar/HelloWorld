@@ -12,12 +12,13 @@ let mapstyle;
 const headers =  { 
     "ngrok-skip-browser-warning": 'true'
   }
-let url = "https://27d1-2a02-ab04-3d2-f800-58b6-d2a-5157-785c.ngrok-free.app"
+let url = "https://5fe8-2a02-ab04-3d2-f800-a1a2-ddb-431c-b6e.ngrok-free.app"
 fetch(`${url}/folder-contents`,{
     headers: headers})
     .then(response => response.json())
     .then(data => {
         Data.Route.routes = data.files
+        Data.totalSum = data.totalSum
         Data.Route.selected = data.files[0]
     })
     .catch(error => {
@@ -35,6 +36,7 @@ let Data = Alpine.reactive({
     path: [],
     speeds:[],
     location:'',
+    totalSum:0,
 
     chartOptions: {
         legend: {
@@ -89,6 +91,7 @@ function fetchData(route) {
             Data.speeds = data.logs.speeds;
             Data.path = data.logs.path;
             Data.location = data.logs.location;
+            
 
             renderChart(data);
             renderBar(data);
@@ -122,9 +125,9 @@ function renderChart(data) {
             datasets: [
                 {
                     label: 'Altitude',
-                    backgroundColor: 'rgba(237, 100, 166, 0.25)',
-                    borderColor: 'rgba(237, 100, 166, 1)',
-                    pointBackgroundColor: 'rgba(237, 100, 166, 1)',
+                    backgroundColor: 'rgb(232, 121, 249,0.25)',
+                    borderColor: 'rgb(232, 121, 249)',
+                    pointBackgroundColor: 'rgb(232, 121, 249)',
                     data: data.logs.altitude,
                 }
             ],
@@ -179,7 +182,7 @@ function loadMap() {
             'type': 'line',
             'source': 'trace',
             'paint': {
-                'line-color': '#00fad0',
+                'line-color': '#99f6e4',
                 'line-opacity': 0.75,
                 'line-width': 5
             }
@@ -201,7 +204,7 @@ function loadMap() {
                 }, new maplibregl.LngLatBounds(coordinates[0], coordinates[0]));
         
                 map.fitBounds(bounds, {
-                    padding: 10
+                    padding: 60
                 });                
             } else {
                 window.clearInterval(timer);
@@ -218,8 +221,8 @@ var data12 = {
     {
         type:'bar',
       label: "Speed",
-      backgroundColor: "#00fad0",
-      borderColor: "#00fad0",
+      backgroundColor: "#99f6e4",
+      borderColor: "#99f6e4",
       borderWidth: 2,
       borderRadius:100,
       data: data.logs.speeds.map(speed => speed * 3.6)
@@ -227,8 +230,8 @@ var data12 = {
     {
         type:'bar',
       label: "Speed2",
-      backgroundColor: "#00fad0",
-      borderColor: "#00fad0",
+      backgroundColor: "#99f6e4",
+      borderColor: "#99f6e4",
       borderWidth: 2,
       borderRadius: 30,
       data: data.logs.speeds.map(speed => speed * -3.6)
