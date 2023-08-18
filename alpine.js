@@ -19,6 +19,8 @@ fetch(`${url}/folder-contents`,{
     .then(data => {
         Data.Route.routes = data.files
         Data.totalSum = data.totalSum
+        let Topspeed = data.fastestSpeed * 3.6;
+        Data.fastestSpeed = Topspeed.toFixed(2)
         Data.Route.selected = data.files[0]
     })
     .catch(error => {
