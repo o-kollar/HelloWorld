@@ -22,10 +22,37 @@
    
 </head>
 
-<body>
+<body class=" bg-zinc-100  dark:bg-zinc-700 dark:text-neutral-200"><!-- component -->
+    <div class="flex 0 flex-wrap -mx-3 mb-1">
+        <div class="w-full max-w-full px-3 mb-1 sm:w-1/2 mx-auto">
+            <div class="relative flex flex-col min-w-0 break-words  bg-teal-300 text-neutral-700 border-0 bg-clip-border rounded-2xl mb-5 draggable">
+                <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
+                    <div class="flex flex-col items-start justify-center m-2 ml-0 font-medium text-xl/normal text-dark">
+                        <span x-text="Data.totalSum" class="text-white text-5xl/none font-semibold mr-2 tracking-[-0.115rem]">92</span>
+                        <span class="pt-1 font-medium text-white/80 text-lg/normal">Total Distance</span>
+                    </div>
+                </div>
+                <div class="flex items-end flex-auto py-8 pt-0 px-9 ">
+                    <div class="flex flex-col items-center w-full mt-3">
+                        <div class="flex justify-between w-full mt-auto mb-2 font-semibold text-white/80 text-lg/normal">
+                            <span class="mr-4">Goal 100km</span>
+                            <span x-text="`${Data.totalSum}%`"></span>
+                        </div>
+    
+                        <div class="mx-3 rounded-2xl h-[8px] w-full bg-white/20">
+                            <div class="rounded-2xl bg-fuchsia-400 h-[8px]"
+                            :style="`width: ${Data.totalSum }%; transition: 1s;`"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
 
     <x-widget name="routes"></x-widget>
-    <div class="w-full bg-zinc-100  dark:bg-zinc-700 dark:text-neutral-200 shadow-2xl items-center justify-center px-5 py-5 ">
+    <div class="w-full shadow-2xl items-center justify-center px-5 py-5 ">
 
         <x-widget name="map"></x-widget>
         
