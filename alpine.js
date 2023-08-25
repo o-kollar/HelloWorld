@@ -1,5 +1,47 @@
 maplibregl.setRTLTextPlugin('https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.min.js');
 
+document.addEventListener("DOMContentLoaded", () => {
+    const messageInput = document.getElementById("message-input");
+    const sendButton = document.getElementById("send-button");
+
+    sendButton.addEventListener("click", () => {
+        const message = messageInput.value.trim();
+        if (message !== "") {
+            // Create and send POST request here
+            sendMessage(message);
+            messageInput.value = ""; // Clear the input field
+        }
+    });
+
+    function sendMessage(message) {
+        // Replace 'your-api-endpoint' with your actual API endpoint
+        fetch("http://localhost:3000/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message }),
+        })
+        .then(response => response.json())
+        .then(result => {
+            Data.distance = result.total;
+            Data.duration = result.duration;
+            Data.elevation = result.elevation;
+            Data.speed = result.speed;
+            Data.speeds = result.logs.speed;
+            Data.path = result.logs.location;
+            Data.abc = result.parts;
+            
+            renderBar(result);
+       renderChart(result.logs.updated, result.logs.altitude);
+       loadMap();
+        })
+        .catch(error => {
+            console.error("Error sending message:", error);
+        });
+    }
+});
+
 let mapstyle;
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         // Device is in dark mode
@@ -12,7 +54,51 @@ let mapstyle;
 const headers =  { 
     "ngrok-skip-browser-warning": 'true'
   }
-let url = "https://5fe8-2a02-ab04-3d2-f800-a1a2-ddb-431c-b6e.ngrok-free.app"
+let url = "https://97c4-2a02-ab04-3d2-f800-a1a2-ddb-431c-b6e.ngrok-free.app"
+  async function getDataAndRender(start, end) {
+    let body = {type:'today'};
+  
+    if (start) {
+      body = {
+        start: start,
+        end: end,
+      };
+    }
+  
+    try {
+      const response = await fetch(`${url}/getData`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+  
+      const result = await response.json();
+  
+      console.log('Post request successful:', result);
+  
+      Data.distance = result.total;
+      Data.duration = result.duration;
+      Data.elevation = result.elevation;
+      Data.speed = result.speed;
+      Data.speeds = result.logs.speed;
+      Data.path = result.logs.location;
+      Data.abc = result.parts;
+      if (!start) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+       renderBar(result);
+       renderChart(result.logs.updated, result.logs.altitude);
+       loadMap();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  getDataAndRender()
+
+//_________
 fetch(`${url}/folder-contents`,{
     headers: headers})
     .then(response => response.json())
@@ -30,6 +116,7 @@ fetch(`${url}/folder-contents`,{
 
 
 let Data = Alpine.reactive({
+    query:'',
     Route:{selected:''}, 
     distance: '',
     duration: '',
@@ -91,7 +178,7 @@ function fetchData(route) {
             Data.elevation = data.elevation;
             Data.speed = data.speed;
             Data.speeds = data.logs.speeds;
-            Data.path = data.logs.path;
+            Data.path = data.logs.location;
             Data.location = data.logs.location;
             
 
@@ -105,7 +192,9 @@ function fetchData(route) {
         });
 }
 
-function renderChart(data) {
+
+
+function renderChart(updated,altitude) {
 
     let c = false;
 
@@ -123,14 +212,14 @@ function renderChart(data) {
     let chart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: data.logs.updated,
+            labels: updated,
             datasets: [
                 {
                     label: 'Altitude',
                     backgroundColor: 'rgb(232, 121, 249,0.25)',
                     borderColor: 'rgb(232, 121, 249)',
                     pointBackgroundColor: 'rgb(232, 121, 249)',
-                    data: data.logs.altitude,
+                    data: altitude,
                 }
             ],
         },
@@ -227,7 +316,7 @@ var data12 = {
       borderColor: "#99f6e4",
       borderWidth: 2,
       borderRadius:100,
-      data: data.logs.speeds.map(speed => speed * 3.6)
+      data: data.logs.speed.map(speed => speed * 3.6)
     },
     {
         type:'bar',
@@ -236,7 +325,7 @@ var data12 = {
       borderColor: "#99f6e4",
       borderWidth: 2,
       borderRadius: 30,
-      data: data.logs.speeds.map(speed => speed * -3.6)
+      data: data.logs.speed.map(speed => speed * -3.6)
     }
   ] 
 };

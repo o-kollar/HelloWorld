@@ -1,21 +1,15 @@
 <div x-data="Data">
     <div class="flex flex-wrap bg-zinc-700  max-h-32 block ">
-        <div x-bind:class="`grid grid-cols-${Route.routes.length} overflow-y-auto bg-zinc-700 bg-blur backdrop-blur-lg whitespace-nowrap`">
-            <template x-for="route in Route.routes">
+        <div x-bind:class="`grid grid-cols-${Data.abc.length} overflow-y-auto bg-zinc-700 bg-blur backdrop-blur-lg whitespace-nowrap`">
+            <template x-for="route in Data.abc">
                 <label class="inline-block  flex flex-wrap cursor-pointer elect-none text-center ">
-                    <input type="radio" x-model="Route.selected" :value="route.fileName" x-on:change="fetchData(Route.selected)"
+                    <input type="radio" x-model="Route.selected" :value="[route.start,route.end]" x-on:change="getDataAndRender(route.start,route.end)"
                         class="peer  hidden" />
                     <div
                         class="relative flex w-32 hover:bg-fuchsia-400 hover:-translate-x-5 transition duration-300 flex-col rounded-xl bg-white bg-clip-border bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20 shadow-md">
                         <div class="p-4">
-
-                            <h5 x-text="route.fileName"
-                                class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
-
-                            </h5>
-                            <p x-text="`${route.total}km`">
-                                Date
-                            </p>
+                            <h5 x-text="route.start;" class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased"></h5>
+                            <p x-text="`${route.total}km`">Date</p>
                         </div>
                     </div>
                 </label>

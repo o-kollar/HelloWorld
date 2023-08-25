@@ -2,13 +2,13 @@
     <div class="row pl-2 pt-2 grid grid-cols-2 row-span-3">
         <div>
             <p class="font-mono font-bold text-m">Average</p>
-            <span class="font-mono text-s  font-bold  " x-text="`${Data.speed}`"></span><span
+            <span class="font-mono text-s  font-bold  " x-text="`${Data.speed.averageSpeed.toFixed(2)}`"></span><span
                 class="text-xs "> Km/h</span>
         </div>
         <div>
             <p class="font-mono font-bold text-m">Top</p>
 
-            <span class="font-mono font-bold text-s" x-text="`${findHighestSpeed(Data.speeds) * 3.6}`"></span>
+            <span class="font-mono font-bold text-s" x-text="`${Data.speed.highestSpeed.toFixed(2)}`"></span>
             <span class="text-xs ">Km/h</span>
 
         </div>
