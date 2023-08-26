@@ -1,15 +1,19 @@
 <div
-    class="flex flex-wrap relative overflow-hidden h-32 col-span-3  grid grid-rows-3  rounded-xl bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20 ">
-    <div class="grid grid-cols-3">
+    class="flex flex-wrap relative overflow-hidden h-32 col-span-3  grid grid-rows-8  rounded-xl bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20 ">
+    <p class="row-span-0 text-xs opacity-70 ml-2 mt-0.5 font-mono">elevation</p>
+    <div class="grid grid-rows-3 grid-cols-3">
         <span
-            class="material-symbols-outlined  col place-self-start text-transparent bg-clip-text Pastel bg-gradient-to-tr from-violet-500 to-orange-300 px-2 text-5xl"
-            x-text="Data.elevation > 0 ? 'trending_up' : 'trending_down'">
+            class="material-symbols-outlined  col place-self-start text-transparent bg-clip-text Pastel bg-gradient-to-tr from-violet-500 to-orange-300 px-2 text-4xl"
+            x-text="Data.elevation.netElevationChange > 0 ? 'trending_up' : 'trending_down'">
         </span>
-        <div class="flex py-4 col row-span-1 ">
-            <div x-text="Data.elevation.netElevationChange.toFixed(2)" class="font-mono text-3xl  font-bold "></div>
+        <div class="flex py-1 absolute end-4 col row-span-1 ">
+            <div x-text="Data.elevation.netElevationChange.toFixed(2)" class="font-mono text-2xl  font-bold "></div>
             <span>m</span>
         </div>
-     
+        <div class="absolute bottom-10 start-4 grid grid-cols-3 place-self-start flex flex-wrap">
+        <span class="text-xs font-bold">Gain</span><p class="text-xs opacity-80 font-mono" x-text="Data.elevation.totalElevationGain.toFixed(2)"></p><span class="text-xs">m</span>
+        <span class="text-xs font-bold">Loss</span><p class="text-xs opacity-80 font-mono" x-text="Data.elevation.totalElevationLoss.toFixed(2)"></p><span class="text-xs">m</span>
+        </div>
     </div>
     <div class="absolute bottom-0 inset-x-0">
         <canvas id="chart" height="70"></canvas>

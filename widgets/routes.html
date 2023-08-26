@@ -3,15 +3,14 @@
         <div x-bind:class="`grid grid-cols-${Data.parts.length} overflow-y-auto   whitespace-nowrap`">
             <template x-for="ride in Data.parts">
                 <label class="inline-block  flex flex-wrap cursor-pointer elect-none text-center ">
-                    <input type="radio" x-model="Route.selected" :value="[ride.start,ride.end]" x-on:change="getDataAndRender(ride.start,ride.end)"
-                        class="peer  hidden" />
+                    <input type="radio" x-model="Route.selected" :value="[ride.start,ride.end]"
+                        x-on:change="getDataAndRender(ride.start,ride.end)" class="peer  hidden" />
                     <div
-                        class=" transition ease-in-out  m-4 relative flex w-32 hover:text-gray-900  hover:bg-fuchsia-400 hover:-translate-x-5  transition duration-300 flex-col rounded-xl bg-white bg-clip-border bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20 shadow-md">
+                        class=" transition ease-in-out  m-4 relative flex w-32 dark:hover:text-gray-900 hover:text-white hover:bg-fuchsia-400 hover:-translate-x-5  transition duration-300 flex-col rounded-xl bg-white bg-clip-border bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20 shadow-md">
                         <div x-data="formatDate(ride.start)" class="p-2 hover:animate-pulse">
                             <p x-text="formatDate(ride.start).month" class="font-mono hover:-gray-700"></p>
                             <p x-text="formatDate(ride.start).day" class=" font-mono text-xl font-bold"></p>
                             <p x-text="formatDate(ride.start).time" class=" font-mono text-sm"></p>
-                           
                         </div>
                     </div>
                 </label>

@@ -12,7 +12,10 @@ function loadMap() {
     const map = new maplibregl.Map({
         container: 'map',
         style: getStyle(),
-        interactive: false
+        interactive: false,
+        center: [17.1077, 48.1486],
+        zoom: 8,
+        
     });
 
     map.on('load', () => {
@@ -49,6 +52,7 @@ function loadMap() {
         const timer = window.setInterval(() => {
             if (i < coordinates.length) {
                 geojsonData.features[0].geometry.coordinates.push(coordinates[i]);
+                
                 map.getSource('trace').setData(geojsonData);
                 i++;
                 const bounds = coordinates.reduce((bounds, coord) => bounds.extend(coord), new maplibregl.LngLatBounds(coordinates[0], coordinates[0]));
