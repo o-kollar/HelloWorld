@@ -1,15 +1,17 @@
 <div x-data="Data">
-    <div class="flex flex-wrap bg-zinc-700  max-h-32 block ">
-        <div x-bind:class="`grid grid-cols-${Data.abc.length} overflow-y-auto bg-zinc-700 bg-blur backdrop-blur-lg whitespace-nowrap`">
-            <template x-for="route in Data.abc">
+    <div class="flex flex-wrap  max-h-32 block ">
+        <div x-bind:class="`grid grid-cols-${Data.parts.length} overflow-y-auto   whitespace-nowrap`">
+            <template x-for="ride in Data.parts">
                 <label class="inline-block  flex flex-wrap cursor-pointer elect-none text-center ">
-                    <input type="radio" x-model="Route.selected" :value="[route.start,route.end]" x-on:change="getDataAndRender(route.start,route.end)"
+                    <input type="radio" x-model="Route.selected" :value="[ride.start,ride.end]" x-on:change="getDataAndRender(ride.start,ride.end)"
                         class="peer  hidden" />
                     <div
-                        class="relative flex w-32 hover:bg-fuchsia-400 hover:-translate-x-5 transition duration-300 flex-col rounded-xl bg-white bg-clip-border bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20 shadow-md">
-                        <div class="p-4">
-                            <h5 x-text="route.start;" class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased"></h5>
-                            <p x-text="`${route.total}km`">Date</p>
+                        class=" transition ease-in-out  m-4 relative flex w-32 hover:text-gray-900  hover:bg-fuchsia-400 hover:-translate-x-5  transition duration-300 flex-col rounded-xl bg-white bg-clip-border bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20 shadow-md">
+                        <div x-data="formatDate(ride.start)" class="p-4 hover:animate-pulse">
+                            <p x-text="formatDate(ride.start).month" class="font-mono hover:-gray-700"></p>
+                            <p x-text="formatDate(ride.start).day" class=" font-mono text-xl font-bold"></p>
+                            <p x-text="formatDate(ride.start).time" class=" font-mono text-sm"></p>
+                           
                         </div>
                     </div>
                 </label>
