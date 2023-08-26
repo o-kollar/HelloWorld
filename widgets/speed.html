@@ -1,15 +1,17 @@
 <div
-    class="flex flex-wrap overflow-hidden grid grid-rows-8 h-32 items-center rounded-xl bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20 ">
-    <p class="font-mono text-xs opacity-70 m-2">speed</p>
-    <span class="material-symbols-outlined text-teal-400 ml-4">
-        speed
-    </span>
-    <div class="row pl-2 pt-2 grid grid-rows-2 row-span-2">
-        <div class="absolute end-4 top-4">
-            <span class="font-mono text-2xl  font-bold  " x-text="`${Data.speed.averageSpeed.toFixed(2)}`"></span><span
+    class="flex flex-wrap overflow-hidden grid grid-rows-8 grid-cols-4 h-32 items-center rounded-xl bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20 ">
+    <div class="">
+        <p class="font-mono text-xs opacity-70 ml-2">speed</p>
+        <span class="material-symbols-outlined text-teal-400 ml-4">
+            speed
+        </span>
+    </div>
+    <div class="row pl-2 pt-2 grid grid-rows-2 ml-2 col-span-3 row-span-2">
+        <div class=" end-4 ">
+            <span class="font-mono  text-2xl  font-bold  " x-text="`${Data.speed.averageSpeed.toFixed(2)}`"></span><span
                 class="text-m "> Km/h</span>
         </div>
-        <div class=" absolute end-4 gap-1 bottom-12 flex flex-wrap">
+        <div class=" end-4 gap-1 flex flex-wrap">
             <p class="font-bold text-xs">Top</p>
             <span class="font-mono opacity-80 text-xs" x-text="`${Data.speed.highestSpeed.toFixed(2)}`"></span>
             <span class="text-xs">Km/h</span>
