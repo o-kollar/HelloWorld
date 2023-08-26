@@ -1,119 +1,89 @@
-
 document.addEventListener("DOMContentLoaded", () => {
     const messageInput = document.getElementById("message-input");
+    
     messageInput.addEventListener("keyup", (event) => {
         if (event.key === "Enter") {
             event.preventDefault(); // Prevent default Enter behavior (form submission)
             sendMessage(messageInput.value.trim());
+            messageInput.blur();
         }
     });
     
+    async function sendMessage(message) {
+        try {
+            const response = await fetch(`${url}/chat`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ message }),
+            });
 
-    function sendMessage(message) {
-        // Replace 'your-api-endpoint' with your actual API endpoint
-        fetch(`${url}/chat`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ message }),
-        })
-        .then(response => response.json())
-        .then(result => {
-            Data.distance = result.total;
-            Data.duration = result.duration;
-            Data.elevation = result.elevation;
-            Data.speed = result.speed;
-            Data.speeds = result.logs.speed;
-            Data.path = result.logs.location;
-            Data.parts = result.parts;
-            console.log('PARTS DATA:',Data.parts)
-            
+            const result = await response.json();
+            updateData(result);
             renderBar(result);
-       renderChart(result.logs.updated, result.logs.altitude);
-       loadMap();
-        })
-        .catch(error => {
+            renderChart(result.logs.updated, result.logs.altitude);
+            loadMap();
+        } catch (error) {
             console.error("Error sending message:", error);
-        });
+        }
     }
 });
 
-
-
-const headers =  { 
+const headers = { 
     "ngrok-skip-browser-warning": 'true'
-  }
-let url = "https://97c4-2a02-ab04-3d2-f800-a1a2-ddb-431c-b6e.ngrok-free.app"
-  async function getDataAndRender(start, end) {
-    let body = {type:'today'};
+};
+let url = "https://97c4-2a02-ab04-3d2-f800-a1a2-ddb-431c-b6e.ngrok-free.app";
 
-  
+async function getDataAndRender(start, end) {
+    let body = { type: 'today' };
+
     if (end) {
-      body = {
-        start: start,
-        end: end,
-      };
+        body = {
+            start: start,
+            end: end,
+        };
     }
-  
+
     try {
-      const response = await fetch(`${url}/getData`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      });
+        const response = await fetch(`${url}/getData`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
 
-      
-  
-      const result = await response.json();
-  
-      console.log('Post request successful:', result);
-  
-      Data.distance = result.total;
-      Data.duration = result.duration;
-      Data.elevation = result.elevation;
-      Data.speed = result.speed;
-      Data.speeds = result.logs.speed;
-      Data.path = result.logs.location;
-      Data.parts = result.parts;
-      if (!start) {
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
-       renderBar(result);
-       renderChart(result.logs.updated, result.logs.altitude);
-       loadMap();
+        const result = await response.json();
+        updateData(result);
+        renderBar(result);
+        renderChart(result.logs.updated, result.logs.altitude);
+        loadMap();
     } catch (error) {
-      console.error(error);
+        console.error(error);
     }
-  }
-  
-  getDataAndRender()
+}
 
-
-
+async function fetchData() {
+    await getDataAndRender();
+}
 
 let Data = Alpine.reactive({
-    query:'',
-    parts:[],
-    Route:{selected:''}, 
+    query: '',
+    parts: [],
+    Route: { selected: '' },
     distance: '',
     duration: '',
     elevation: '',
     speed: '',
     path: [],
-    speeds:[],
-    location:'',
-    totalSum:0,
+    speeds: [],
+    location: '',
+    totalSum: 0,
 
     chartOptions: {
-        legend: {
-            display: false,
-        },
-        tooltips: {
-            enabled: false,
-        },
+        legend: false,
+        tooltips: false,
         elements: {
             point: {
                 radius: 0,
@@ -125,8 +95,7 @@ let Data = Alpine.reactive({
                     gridLines: false,
                     scaleLabel: false,
                     ticks: {
-                        display:false
-                    
+                        display: false
                     },
                 },
             ],
@@ -143,8 +112,15 @@ let Data = Alpine.reactive({
     },
 });
 
-
-
+function updateData(result) {
+    Data.distance = result.total;
+    Data.duration = result.duration;
+    Data.elevation = result.elevation;
+    Data.speed = result.speed;
+    Data.speeds = result.logs.speed;
+    Data.path = result.logs.location;
+    Data.parts = result.parts;
+}
 
 
 function renderChart(updated,altitude) {

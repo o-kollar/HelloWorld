@@ -1,24 +1,22 @@
+// Set up the RTL Text Plugin
 maplibregl.setRTLTextPlugin('https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.min.js');
 
+// Determine the style based on color scheme preference
 function getStyle() {
-    let mapstyle;
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        // Device is in dark mode
-        mapstyle = './widgets/map/styles/dark.json';
-    } else {
-        // Device is not in dark mode
-        mapstyle = './widgets/map/styles/default.json';
-    }
-    return mapstyle;
+    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return isDarkMode ? './widgets/map/styles/dark.json' : './widgets/map/styles/default.json';
 }
 
+// Load and initialize the map
 function loadMap() {
     const map = new maplibregl.Map({
         container: 'map',
         style: getStyle(),
+        interactive: false
     });
 
     map.on('load', () => {
+        const coordinates = Data.path;
         const geojsonData = {
             type: 'FeatureCollection',
             features: [
@@ -27,19 +25,13 @@ function loadMap() {
                     properties: {},
                     geometry: {
                         type: 'LineString',
-                        coordinates: Data.path,
+                        coordinates: [coordinates[0]],
                     },
                 },
             ],
         };
 
-        // save full coordinate list for later
-        const coordinates = geojsonData.features[0].geometry.coordinates;
-
-        // start by showing just the first coordinate
-        geojsonData.features[0].geometry.coordinates = [coordinates[0]];
-
-        // add it to the map
+        // Add source and layer to the map
         map.addSource('trace', { type: 'geojson', data: geojsonData });
         map.addLayer({
             id: 'trace',
@@ -52,22 +44,15 @@ function loadMap() {
             },
         });
 
-        // setup the viewport
-        map.jumpTo({ center: coordinates[0], zoom: 14 });
-        // on a regular basis, add more coordinates from the saved list and update the map
-        let i = 0;
+        // Set up interval to update the map with additional coordinates
+        let i = 1;
         const timer = window.setInterval(() => {
             if (i < coordinates.length) {
                 geojsonData.features[0].geometry.coordinates.push(coordinates[i]);
                 map.getSource('trace').setData(geojsonData);
                 i++;
-                const bounds = coordinates.reduce((bounds, coord) => {
-                    return bounds.extend(coord);
-                }, new maplibregl.LngLatBounds(coordinates[0], coordinates[0]));
-
-                map.fitBounds(bounds, {
-                    padding: 60,
-                });
+                const bounds = coordinates.reduce((bounds, coord) => bounds.extend(coord), new maplibregl.LngLatBounds(coordinates[0], coordinates[0]));
+                map.fitBounds(bounds, { padding: 60 });
             } else {
                 window.clearInterval(timer);
             }
