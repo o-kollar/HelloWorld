@@ -178,77 +178,30 @@ var data12 = {
   labels: data.logs.updated,
   datasets: [
     {
-        type:'bar',
+        type:'line',
       label: "Speed",
-      backgroundColor: "#99f6e4",
-      borderColor: "#99f6e4",
+      backgroundColor: "#8b5cf6",
+      borderColor: "#5eead4",
       borderWidth: 2,
-      borderRadius:100,
+      borderRadius:60,
       data: data.logs.speed.map(speed => speed * 3.6)
     },
     {
-        type:'bar',
+        type:'line',
       label: "Speed2",
-      backgroundColor: "#99f6e4",
-      borderColor: "#99f6e4",
+      backgroundColor: "#8b5cf6",
+      borderColor: "#5eead4",
       borderWidth: 2,
-      borderRadius: 30,
+      borderRadius: 60,
       data: data.logs.speed.map(speed => speed * -3.6)
     }
   ] 
 };
 
 window.myBar = new Chart(ctx12, {
-  type: 'bar',
+  type: 'line',
   data: data12,
-  options: {
-    legend: {
-        display: false,
-    },
-    tooltips: {
-        enabled: false,
-    },
-    responsive: true,
-    title: {
-      display: false,
-      text: 'Chart.js Bar Chart'
-    },
-    legend: false,
-    scales: {
-        xAxes: [{
-            categoryPercentage: 0.5,
-            barPercentage: 1,
-            gridLines : {
-                display: false,
-                drawBorder: false,
-                drawTicks: false,
-
-            },
-            ticks: {
-                display:false,
-                fontStyle: 'bold',
-                fontSize: 13,
-                fontColor: "#333333",
-                beginAtZero: true
-            }
-        }],
-        yAxes: [{
-            gridLines: {
-                display: false,
-                drawBorder: false,
-                drawTicks: false,
-                tickMarkLength: 15,
-                borderDashOffset: 15
-            },
-            ticks: {
-                display: false,
-                fontStyle: 'bold',
-                fontSize: 10,
-                beginAtZero: true,
-            }
-        }]
-    }
-  }
+  options: Data.chartOptions
 });}
 
 
