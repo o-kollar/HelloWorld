@@ -4,11 +4,12 @@
 <head>
     <title>HelloWorld</title>
     <link rel="apple-touch-icon" sizes="180x180" href="./resources/favicon_io/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="./resources/favicon_io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="./resources/favicon_io/favicon-16x16.png">
-<link rel="manifest" href="./resources/favicon_io/site.webmanifest">
-            <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, shrink-to-fit=no, user-scalable=no " />
+    <link rel="icon" type="image/png" sizes="32x32" href="./resources/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./resources/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="./resources/favicon_io/site.webmanifest">
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1, shrink-to-fit=no, user-scalable=no " />
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@3.2.0/dist/maplibre-gl.css' />
@@ -22,13 +23,12 @@
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
     <script src="./script.js"></script>
- <script src="./toBe.js"></script>
+    <script src="./toBe.js"></script>
     <script src="./widgets/loader.js"></script>
     <script src="./widgets/map/map.js"></script>
     <script src="./utils/date.js"></script>
-
-
 </head>
+
 <body class=" bg-zinc-100  dark:bg-zinc-900  dark:text-neutral-200">
     <!-- component -->
     <div>
@@ -39,15 +39,14 @@
                         <span class="material-symbols-outlined ">
                             arrow_back_ios
                         </span>
-                    </div>                    
+                    </div>
                 </div>
-                <input id="message-input"
-                   x-model="Data.query" x-text="Data.query" class="font-bold rounded-lg w-full py-4 pl-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-teal-300   bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20"
+                <input id="message-input" x-model="Data.query" x-text="Data.query"
+                    class="font-bold rounded-lg w-full py-4 pl-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-teal-300   bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20"
                     type="text" placeholder="Today">
             </div>
         </div>
     </div>
-    <p class="text-4xl m-2 font-bold">Rides</p>
     <x-widget name="routes"></x-widget>
     <div class="w-full shadow-2xl items-center justify-center px-5 py-5 ">
 

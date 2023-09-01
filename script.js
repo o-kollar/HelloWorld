@@ -1,20 +1,20 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const messageInput = document.getElementById("message-input");
-    
-    messageInput.addEventListener("keyup", (event) => {
-        if (event.key === "Enter") {
+document.addEventListener('DOMContentLoaded', () => {
+    const messageInput = document.getElementById('message-input');
+
+    messageInput.addEventListener('keyup', (event) => {
+        if (event.key === 'Enter') {
             event.preventDefault(); // Prevent default Enter behavior (form submission)
             sendMessage(messageInput.value.trim());
             messageInput.blur();
         }
     });
-    
+
     async function sendMessage(message) {
         try {
             const response = await fetch(`${url}/chat`, {
-                method: "POST",
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ message }),
             });
@@ -25,15 +25,15 @@ document.addEventListener("DOMContentLoaded", () => {
             renderChart(result.logs.updated, result.logs.altitude);
             loadMap();
         } catch (error) {
-            console.error("Error sending message:", error);
+            console.error('Error sending message:', error);
         }
     }
 });
 
-const headers = { 
-    "ngrok-skip-browser-warning": 'true'
+const headers = {
+    'ngrok-skip-browser-warning': 'true',
 };
-let url = "https://97c4-2a02-ab04-3d2-f800-a1a2-ddb-431c-b6e.ngrok-free.app";
+let url = 'https://97c4-2a02-ab04-3d2-f800-a1a2-ddb-431c-b6e.ngrok-free.app';
 
 async function getDataAndRender(start, end) {
     let body = { type: 'today' };
@@ -49,9 +49,9 @@ async function getDataAndRender(start, end) {
         const response = await fetch(`${url}/getData`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(body)
+            body: JSON.stringify(body),
         });
 
         const result = await response.json();
@@ -95,7 +95,7 @@ let Data = Alpine.reactive({
                     gridLines: false,
                     scaleLabel: false,
                     ticks: {
-                        display: false
+                        display: false,
                     },
                 },
             ],
@@ -112,25 +112,75 @@ let Data = Alpine.reactive({
     },
 });
 
-function updateData(result) {
+async function updateData(result) {
     activity = calculateTimeSpent(result.logs);
 
     Data.distance = result.total;
-    Data.duration = { total: result.duration,moving: formatTime(activity.movingTime),idle:formatTime(activity.inactiveTime)}
+    Data.duration = { total: result.duration, moving: formatTime(activity.movingTime), idle: formatTime(activity.inactiveTime) };
     Data.elevation = result.elevation;
     Data.speed = result.speed;
     Data.speeds = result.logs.speed;
     Data.path = result.logs.location;
 
     // Temporarily on Frontend
-    Data.parts = separateLogsByTimeGapAndCalculateDistance(result.logs.updated,result.logs.location)
-    const separatedLogs = separateLogsByTimeGap(result.logs.updated);
+    Data.parts = separateLogsByTimeGapAndCalculateDistance(result.logs.updated, result.logs.location);
+    Data.abc = getHighestAltitudePoint(result.logs.altitude, result.logs.location);
+    const localityLanguage = 'sk';
+
+    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${Data.abc.latitude}&longitude=${Data.abc.longitude}&localityLanguage=${localityLanguage}`;
+
+    fetch(url)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            // Handle the response data here
+            console.log(data);
+        })
+        .catch((error) => {
+            // Handle any errors that occurred during the fetch
+            console.error('Fetch Error:', error);
+        });
+
+        const cyclingEfficiency = calculateCyclingEfficiency(result.logs);
+        console.log(cyclingEfficiency);
+
+
+ Data.hills = calculateUphillDownhillDistance(result.logs);
+
+// Function to call the API for a specific entry
+async function fetchWeatherData(index) {
+    const apiUrl = "https://api.open-meteo.com/v1/forecast";
+const parameters = "hourly=temperature_2m,precipitation_probability,precipitation,weathercode";
+    const [longitude, latitude] = result.logs.location[index];
+    const startDate = result.logs.updated[index].split('T')[0];
+    const endDate = startDate;
+  
+    const ul = `${apiUrl}?latitude=${latitude}&longitude=${longitude}&${parameters}&start_date=${startDate}&end_date=${endDate}`;
+  
+    try {
+      const response = await fetch(ul);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log(`Weather data for entry ${index}:`, data);
+    } catch (error) {
+      console.error(`Error fetching data for entry ${index}:`, error);
+    }
+  }
+  
+  // Call the API for every 10th entry
+  for (let i = 0; i < result.logs.updated.length; i += 200) {
+    fetchWeatherData(i);
+  }
 
 }
 
-
-function renderChart(updated,altitude) {
-
+function renderChart(updated, altitude) {
     let c = false;
 
     Chart.helpers.each(Chart.instances, function (instance) {
@@ -155,7 +205,7 @@ function renderChart(updated,altitude) {
                     borderColor: 'rgb(232, 121, 249)',
                     pointBackgroundColor: 'rgb(232, 121, 249)',
                     data: altitude,
-                }
+                },
             ],
         },
         layout: {
@@ -164,50 +214,48 @@ function renderChart(updated,altitude) {
             },
         },
         options: Data.chartOptions,
-    });   
+    });
 }
 
-
-
-window.onload = function(){loadMap()}
+window.onload = function () {
+    loadMap();
+};
 fetchData();
 
-function clearInput(){
+function clearInput() {
     Data.query = '';
     getDataAndRender();
 }
 
+function renderBar(data) {
+    var ctx12 = document.getElementById('chart12').getContext('2d');
+    var data12 = {
+        labels: data.logs.updated,
+        datasets: [
+            {
+                type: 'line',
+                label: 'Speed',
+                backgroundColor: '#8b5cf6',
+                borderColor: '#5eead4',
+                borderWidth: 2,
+                borderRadius: 60,
+                data: data.logs.speed.map((speed) => speed * 3.6),
+            },
+            {
+                type: 'line',
+                label: 'Speed2',
+                backgroundColor: '#8b5cf6',
+                borderColor: '#5eead4',
+                borderWidth: 2,
+                borderRadius: 60,
+                data: data.logs.speed.map((speed) => speed * -3.6),
+            },
+        ],
+    };
 
-function renderBar(data){
-var ctx12 = document.getElementById("chart12").getContext("2d");
-var data12 = {
-  labels: data.logs.updated,
-  datasets: [
-    {
-        type:'line',
-      label: "Speed",
-      backgroundColor: "#8b5cf6",
-      borderColor: "#5eead4",
-      borderWidth: 2,
-      borderRadius:60,
-      data: data.logs.speed.map(speed => speed * 3.6)
-    },
-    {
-        type:'line',
-      label: "Speed2",
-      backgroundColor: "#8b5cf6",
-      borderColor: "#5eead4",
-      borderWidth: 2,
-      borderRadius: 60,
-      data: data.logs.speed.map(speed => speed * -3.6)
-    }
-  ] 
-};
-
-window.myBar = new Chart(ctx12, {
-  type: 'line',
-  data: data12,
-  options: Data.chartOptions
-});}
-
-
+    window.myBar = new Chart(ctx12, {
+        type: 'line',
+        data: data12,
+        options: Data.chartOptions,
+    });
+}

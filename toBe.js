@@ -108,8 +108,80 @@ function separateLogsByTimeGapAndCalculateDistance(logsArray, locationArray) {
     if (currentPart.length > 0) {
         separatedLogs.push({ start: currentPart[0], end: currentPart[currentPart.length - 1], distance: totalDistance });
     }
-
-    console.log(separatedLogs)
     return separatedLogs;
+}
+
+function getHighestAltitudePoint(altitudes, locations) {
+    let highestAltitude = -Infinity;
+    let highestAltitudeIndex = -1;
+  
+    // Find the index of the highest altitude
+    for (let i = 0; i < altitudes.length; i++) {
+      const altitude = parseFloat(altitudes[i]);
+  
+      if (!isNaN(altitude) && altitude > highestAltitude) {
+        highestAltitude = altitude;
+        highestAltitudeIndex = i;
+      }
+    }
+  
+    // Retrieve the corresponding location (longitude and latitude)
+    if (highestAltitudeIndex !== -1) {
+      const [longitude, latitude] = locations[highestAltitudeIndex];
+      return { longitude, latitude };
+    } else {
+      return null; // No valid altitude found
+    }
+  }
+  
+  function calculateCyclingEfficiency(logs) {
+    const elevationData = logs.altitude.map(parseFloat);
+    const speedData = logs.speed.map(parseFloat);
+  
+    const elevationChange = elevationData.map((altitude, index, arr) => {
+      if (index === 0) {
+        return 0;
+      }
+      return altitude - arr[index - 1];
+    });
+  
+    const efficiencyData = elevationChange.map((change, index) => {
+      if (change === 0 || speedData[index] === null) {
+        return null;
+      }
+      return (speedData[index] / change) * 100;
+    });
+  
+    return efficiencyData;
+  }
+  
+  function calculateUphillDownhillDistance(data) {
+    const altitudeChanges = data.altitude.map(parseFloat);
+    const locationCoordinates = data.location;
+    const threshold = 0; // Define your threshold value here
+
+    let uphillDistance = 0;
+    let downhillDistance = 0;
+    let prevAltitude = altitudeChanges[0];
+
+    for (let i = 1; i < altitudeChanges.length; i++) {
+        const altitudeChange = altitudeChanges[i] - prevAltitude;
+
+        if (altitudeChange > threshold) {
+            // Uphill segment
+            const [lat1, lon1] = locationCoordinates[i - 1];
+            const [lat2, lon2] = locationCoordinates[i];
+            uphillDistance += calculateDistance(lat1, lon1, lat2, lon2);
+        } else if (altitudeChange < -threshold) {
+            // Downhill segment
+            const [lat1, lon1] = locationCoordinates[i - 1];
+            const [lat2, lon2] = locationCoordinates[i];
+            downhillDistance += calculateDistance(lat1, lon1, lat2, lon2);
+        }
+
+        prevAltitude = altitudeChanges[i];
+    }
+
+    return { uphillDistance, downhillDistance };
 }
 
