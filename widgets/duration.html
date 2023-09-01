@@ -1,10 +1,15 @@
-<div class="flex flex-wrap grid grid-cols-3 col-span-1 h-32 rounded-xl bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20">
+<div
+    class="flex flex-wrap grid grid-cols-3 col-span-1 h-32 rounded-xl bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20">
     <span
         class="material-symbols-outlined  text-transparent bg-clip-text bg-[conic-gradient(at_left,_var(--tw-gradient-stops))] from-yellow-500 via-purple-500 to-blue-500 text-4xl">
         timer
     </span>
-    <div x-text="`${Data.duration.total.hours}h ${Data.duration.total.minutes}m`" class="font-mono col-span-2 py-8 px-2 text-2xl font-bold "></div>
-    <p  x-text="`${Data.duration.moving.hours}h ${Data.duration.moving.minutes}m`"></p>
-    <p  x-text="`${Data.duration.idle.hours}h ${Data.duration.idle.minutes}m`"></p>
-   
+    <p x-text="`${Data.duration.total.hours}h ${Data.duration.total.minutes}m`"
+        class="font-mono col-span-2 py-4 px-2 text-2xl font-bold "></p>
+    <div class="flex ">
+        <p class="font-bold text-xs pl-3">Active</p>
+        <p class="font-mono text-sm opacity-70 pl-2" x-text="`${Data.duration.moving.hours}h`"></p>
+        <p class="font-mono text-sm opacity-70 pl-2" x-text="`${Data.duration.moving.minutes}m`"></p>
+    </div>
+
 </div>

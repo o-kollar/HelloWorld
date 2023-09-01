@@ -12,7 +12,7 @@ function loadMap() {
     const map = new maplibregl.Map({
         container: 'map',
         style: getStyle(),
-        interactive: false,
+        interactive: true,
         center: [17.1077, 48.1486],
         zoom: 8,
         
