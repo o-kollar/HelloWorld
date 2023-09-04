@@ -125,7 +125,7 @@ async function updateData(result) {
     // Temporarily on Frontend
     Data.parts = separateLogsByTimeGapAndCalculateDistance(result.logs.updated, result.logs.location);
     Data.abc = getHighestAltitudePoint(result.logs.altitude, result.logs.location);
-    const localityLanguage = 'sk';
+    const localityLanguage = 'en';
 
     const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${Data.abc.latitude}&longitude=${Data.abc.longitude}&localityLanguage=${localityLanguage}`;
 
@@ -139,6 +139,7 @@ async function updateData(result) {
         .then((data) => {
             // Handle the response data here
             console.log(data);
+            Data.abc.locality = data.localityInfo.informative[2].name
         })
         .catch((error) => {
             // Handle any errors that occurred during the fetch
@@ -173,7 +174,7 @@ const parameters = "hourly=temperature_2m,precipitation_probability,precipitatio
     }
   }
   
-  // Call the API for every 10th entry
+  // Call the API for every 200th entry
   for (let i = 0; i < result.logs.updated.length; i += 200) {
     fetchWeatherData(i);
   }
