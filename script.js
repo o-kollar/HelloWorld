@@ -80,6 +80,9 @@ let Data = Alpine.reactive({
     speeds: [],
     location: '',
     totalSum: 0,
+    temperature:'',
+    precipitation:'',
+
 
     chartOptions: {
         legend: false,
@@ -155,7 +158,7 @@ async function updateData(result) {
 // Function to call the API for a specific entry
 async function fetchWeatherData(index) {
     const apiUrl = "https://api.open-meteo.com/v1/forecast";
-const parameters = "hourly=temperature_2m,precipitation_probability,precipitation,weathercode";
+    const parameters = "hourly=temperature_2m,precipitation_probability,precipitation,weathercode";
     const [longitude, latitude] = result.logs.location[index];
     const startDate = result.logs.updated[index].split('T')[0];
     const endDate = startDate;
@@ -169,13 +172,48 @@ const parameters = "hourly=temperature_2m,precipitation_probability,precipitatio
       }
       const data = await response.json();
       console.log(`Weather data for entry ${index}:`, data);
+      
+      // Create a Date object from the start date
+      const start = new Date(result.logs.updated[index]);
+      
+      // Initialize an array to store the differences
+      const differences = [];
+      
+      // Loop through the time array and calculate the differences
+      for (let time of data.hourly.time) {
+        // Create a Date object from the time string
+        let date = new Date(time);
+        
+        // Calculate the absolute difference in milliseconds
+        let diff = Math.abs(date - start);
+        
+        // Push the difference to the array
+        differences.push(diff);
+      }
+      
+      // Find the minimum difference in the array
+      let minDiff = Math.min(...differences);
+      
+      // Find the index of the minimum difference
+      let minIndex = differences.indexOf(minDiff);
+      
+      // Print out the entry with the minimum difference
+      console.log(`The entry closest to the start date is:`);
+      console.log(`Time: ${data.hourly.time[minIndex]}`);
+      console.log(`Temperature: ${data.hourly.temperature_2m[minIndex]} °C`);
+      Data.temperature = data.hourly.temperature_2m[minIndex]
+      console.log(`Precipitation: ${data.hourly.precipitation[minIndex]} mm`);
+      Data.precipitation = data.hourly.precipitation[minIndex]
+      console.log(`Weather code: ${data.hourly.weathercode[minIndex]}`);
+      
     } catch (error) {
       console.error(`Error fetching data for entry ${index}:`, error);
     }
   }
+
   
   // Call the API for every 200th entry
-  for (let i = 0; i < result.logs.updated.length; i += 200) {
+  for (let i = 0; i < result.logs.updated.length; i += 500) {
     fetchWeatherData(i);
   }
 
@@ -229,8 +267,8 @@ function clearInput() {
 }
 
 function renderBar(data) {
-    var ctx12 = document.getElementById('chart12').getContext('2d');
-    var data12 = {
+    var ctx2 = document.getElementById('chart12').getContext('2d');
+    var data2 = {
         labels: data.logs.updated,
         datasets: [
             {
@@ -251,6 +289,31 @@ function renderBar(data) {
                 borderRadius: 60,
                 data: data.logs.speed.map((speed) => speed * -3.6),
             },
+        ],
+    };
+
+    window.myBar = new Chart(ctx2, {
+        type: 'line',
+        data: data2,
+        options: Data.chartOptions,
+    });
+}
+
+function weatherChart() {
+    var ctx12 = document.getElementById('weatherChart').getContext('2d');
+    var data12 = {
+        labels: Data.temperature,
+        datasets: [
+            {
+                type: 'line',
+                label: 'Speed',
+                backgroundColor: '#8b5cf6',
+                borderColor: '#5eead4',
+                borderWidth: 2,
+                borderRadius: 60,
+                data: Data.temperature
+            },
+           
         ],
     };
 

@@ -2,8 +2,8 @@
     class="flex flex-wrap h-32 grid grid-rows-2 overflow-hidden items-center rounded-xl bg-zinc-400 bg-blur backdrop-blur-lg bg-opacity-20 ">
     <div class="row grid flex">
         <div class=" flex place-self-end mr-2 mb-5 "><p x-text="`${Data.distance}`" class="font-mono font-bold text-2xl"></p><span>km</span></div>
-        <div class="absolute pt-8 pl-4 justify-start grid grid-cols-2 grid-rows-3 place-self-start flex h-28">
-            <div class="text-xs  font-bold">Locality</div>
+        <div class="absolute pt-8 pl-2 justify-start grid grid-cols-2 grid-rows-3 place-self-start flex h-28">
+            <div class="text-xs font-bold">Locality</div>
                 <div> <p class="text-xs opacity-80 font-mono" x-text="Data.abc.locality"></p></div>
             <div><span class="text-xs  font-bold">Climb </span></div>
             <div class="flex flex-wrap" ><p class="text-xs opacity-80 font-mono" x-text="Data.hills.uphillDistance.toFixed(2)"></p>

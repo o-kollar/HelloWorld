@@ -56,7 +56,7 @@ function loadMap() {
                 map.getSource('trace').setData(geojsonData);
                 i++;
                 const bounds = coordinates.reduce((bounds, coord) => bounds.extend(coord), new maplibregl.LngLatBounds(coordinates[0], coordinates[0]));
-                map.fitBounds(bounds, { padding: 60 });
+                map.fitBounds(bounds, { padding: 80 });
             } else {
                 window.clearInterval(timer);
             }
