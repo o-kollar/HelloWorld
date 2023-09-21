@@ -201,10 +201,11 @@ async function fetchWeatherData(index) {
       console.log(`The entry closest to the start date is:`);
       console.log(`Time: ${data.hourly.time[minIndex]}`);
       console.log(`Temperature: ${data.hourly.temperature_2m[minIndex]} °C`);
-      Data.temperature = data.hourly.temperature_2m[minIndex]
+      Data.temperature = data.hourly.temperature_2m[minIndex];
       console.log(`Precipitation: ${data.hourly.precipitation[minIndex]} mm`);
-      Data.precipitation = data.hourly.precipitation[minIndex]
+      Data.precipitation = data.hourly.precipitation[minIndex];
       console.log(`Weather code: ${data.hourly.weathercode[minIndex]}`);
+      Data.weatherCode = data.hourly.weathercode[minIndex];
       
     } catch (error) {
       console.error(`Error fetching data for entry ${index}:`, error);
@@ -323,3 +324,32 @@ function weatherChart() {
         options: Data.chartOptions,
     });
 }
+
+
+function getIcon(weatherCode) {
+    // Define a mapping of values to icons
+    const icons = {
+      "0": "sunny", // Clear sky
+      "1": "partly_cloudy_day", // Partly cloudy
+      "2": "cloud_queue", // Cloudy
+      "3": "cloudy", // Overcast
+      "4": "cloud_off", // Obscured sky
+      "5": "hail", // Haze
+      "80": "rainy", // Fog
+      "7": "fog", // Ice fog
+      "8": "smoke_free", // Smoke
+      "9": "grain", // Dust or sand whirls
+      "10": "dust", // Duststorm or sandstorm
+      "11": "shower_rain", // Light or moderate shower(s) of rain
+      "12": "rain", // Heavy shower(s) of rain
+      "13": "snow", // Light or moderate shower(s) of snow
+      "14": "snow", // Heavy shower(s) of snow
+      "15": "sleet", // Shower(s) of rain and snow mixed
+      "16": "sleet", // Shower(s) of hail, or rain and hail mixed
+      "17": "sleet", // Shower(s) of soft hail or snow pellets
+      "18": "thermostat", // Thunder
+    };
+    console.log( 'ICON IS ',icons[weatherCode])
+    // Return the icon corresponding to the value, or a default icon if not found
+    return icons[weatherCode] || "";
+  }
